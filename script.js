@@ -15,17 +15,21 @@ function preventDefault(pilot, copilot, fuel, cargo) {
 	
 
 	event.preventDefault();
+	let test = true;
 
 	if( pilot.value === "" || copilot.value === "" || fuel.value === "" || cargo.value === "") {
 				
 		alert("All fields are required!");
 		event.preventDefault();
+		test = false;
 	}
 	
 	if ( !isNaN(pilot.value) || !isNaN(copilot.value) || isNaN(fuel.value) || isNaN(cargo.value)){
 		alert("Make sure to enter valid information for each field!");
+		test = false;
 	}
 	
+	return test;
 
 }
 
@@ -37,6 +41,7 @@ function shuttleStatus(pilot, copilot, fuel, cargo) {
 	let fuelStatus = document.getElementById("fuelStatus");
 	let cargoStatus = document.getElementById("cargoStatus");
 	let launchStatus = document.getElementById("launchStatus"); 
+	let test = true;
 	
 	pilotStatus.innerHTML =  `Pilot ${pilot.value} is ready for launch`;
 	copilotStatus.innerHTML =  `Co-pilot ${copilot.value} is ready for launch`;
@@ -54,7 +59,8 @@ function shuttleStatus(pilot, copilot, fuel, cargo) {
 		fuelStatus.innerHTML = "Fuel level too low for launch";
 		launchStatus.innerHTML = "Shuttle not ready for launch";
 		launchStatus.style.color = "red";	
-		status.style.visibility = "visible" ;		
+		status.style.visibility = "visible" ;	
+		test = false;
 	}
 	
 	if ( cargo.value > 10000) {
@@ -63,7 +69,10 @@ function shuttleStatus(pilot, copilot, fuel, cargo) {
 		launchStatus.innerHTML = "Shuttle not ready for launch";
 		launchStatus.style.color = "red";	
 		status.style.visibility = "visible" ;	
+		test = false;
 	}	
+	
+	return test;
 }
 
 function planetData() {
@@ -109,9 +118,9 @@ window.addEventListener("load", function() {
 			
 	form.addEventListener("submit", function(event) {
 				
-		preventDefault(pilotName, copilotName, fuelLevel, cargoMass);
-		shuttleStatus(pilotName, copilotName, fuelLevel, cargoMass);		
-		planetData();
+		if ( preventDefault(pilotName, copilotName, fuelLevel, cargoMass) && shuttleStatus(pilotName, copilotName, fuelLevel, cargoMass)) {		
+			planetData();
+		}
 		
 	});
 });
